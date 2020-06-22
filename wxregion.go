@@ -3,33 +3,33 @@ package wxregion
 import "strings"
 
 type Region struct {
-	Country  string
-	Province string
-	City     string
+	CountryOrRegion string
+	Province        string
+	City            string
 }
 
-func WxRegionToCN(country, province, city string) Region {
+func WxRegionToCN(countryOrRegion, province, city string) Region {
 	region := Region{
-		Country:  country,
-		Province: province,
-		City:     city,
+		CountryOrRegion: countryOrRegion,
+		Province:        province,
+		City:            city,
 	}
-	if country == "" {
+	if countryOrRegion == "" {
 		return region
 	}
 
-	countryLowcase := strings.ToLower(country)
-	countryCN := RegionMap[countryLowcase]
-	if countryCN == "" {
+	countryOrRegionLowcase := strings.ToLower(countryOrRegion)
+	countryOrRegionCN := RegionMap[countryOrRegionLowcase]
+	if countryOrRegionCN == "" {
 		return region
 	}
-	region.Country = countryCN
+	region.CountryOrRegion = countryOrRegionCN
 
 	if province == "" {
 		return region
 	}
 	provinceLowcase := strings.ToLower(province)
-	cProv := strings.Join([]string{countryLowcase, provinceLowcase}, "_")
+	cProv := strings.Join([]string{countryOrRegionLowcase, provinceLowcase}, "_")
 	provinceCN := RegionMap[cProv]
 	if provinceCN == "" {
 		return region
@@ -40,7 +40,7 @@ func WxRegionToCN(country, province, city string) Region {
 		return region
 	}
 	cityLowcase := strings.ToLower(city)
-	cProvCity := strings.Join([]string{countryLowcase, provinceLowcase, cityLowcase}, "_")
+	cProvCity := strings.Join([]string{countryOrRegionLowcase, provinceLowcase, cityLowcase}, "_")
 	cityCN := RegionMap[cProvCity]
 	if cityCN == "" {
 		return region
